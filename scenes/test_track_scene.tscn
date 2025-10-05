@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=4 uid="uid://dkjkj1o5y6mco"]
+[gd_scene load_steps=11 format=4 uid="uid://dkjkj1o5y6mco"]
 
 [ext_resource type="Texture2D" uid="uid://nvj7j83cwsqm" path="res://graphics/track_tileset.png" id="1_aw28n"]
-[ext_resource type="Script" uid="uid://4efoh6fgf0h4" path="res://playerMovement.gd" id="2_3nhsu"]
+[ext_resource type="Script" uid="uid://4efoh6fgf0h4" path="res://scripts/playerMovement.gd" id="2_3nhsu"]
 [ext_resource type="Texture2D" uid="uid://dnkw4db3aut5g" path="res://graphics/dummy_car.bmp" id="3_0rk5w"]
-[ext_resource type="Script" uid="uid://ci4cqs28oqdmv" path="res://scenes/camera.gd" id="4_3nhsu"]
+[ext_resource type="Script" uid="uid://ci4cqs28oqdmv" path="res://scripts/camera.gd" id="4_3nhsu"]
+[ext_resource type="Script" uid="uid://4do1406d241l" path="res://scenes/speedBar.gd" id="5_0rk5w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ia6al"]
 texture = ExtResource("1_aw28n")
@@ -88,6 +89,12 @@ func _input(event: InputEvent) -> void:
 	var horizontal = Input.get
 "
 
+[sub_resource type="LabelSettings" id="LabelSettings_0rk5w"]
+font_size = 25
+font_color = Color(1, 0.906235, 0.889087, 1)
+shadow_size = 3
+shadow_color = Color(1, 0.145098, 0.27451, 1)
+
 [node name="Node2D" type="Node2D"]
 
 [node name="CanvasGroup" type="CanvasGroup" parent="."]
@@ -113,3 +120,37 @@ script = SubResource("GDScript_xq1vi")
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(572, 326)
 script = ExtResource("4_3nhsu")
+
+[node name="ProgressBar" type="ProgressBar" parent="Camera2D"]
+offset_left = -565.0
+offset_top = 193.0
+offset_right = -539.0
+offset_bottom = 319.0
+rounded = true
+fill_mode = 3
+show_percentage = false
+script = ExtResource("5_0rk5w")
+
+[node name="Label" type="Label" parent="Camera2D/ProgressBar"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 124.0
+offset_right = 104.0
+offset_bottom = 147.0
+rotation = -1.57079
+text = "SPEED"
+label_settings = SubResource("LabelSettings_0rk5w")
+
+[node name="CheckButton" type="CheckButton" parent="Camera2D"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 318.0
+offset_top = -321.0
+offset_right = 574.0
+offset_bottom = -244.0
+grow_horizontal = 0
+text = "Включить автоускорение"
+
+[connection signal="toggled" from="Camera2D/CheckButton" to="CanvasGroup/player_car" method="_on_check_button_toggled"]
